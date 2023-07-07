@@ -43,7 +43,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
 import dataDriven.dataDriven;
-import extentReport.BaseTest1;
+import extentReport.BaseTestMP;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -51,7 +51,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 
-public class BrokenLinkMP extends BaseTest1 {
+public class BrokenLinkMP extends BaseTestMP {
 	public ExtentTest extentTest;
 
 	String loginPage = "https://vnshealth-crm--fullsbx.sandbox.my.site.com/member/login";

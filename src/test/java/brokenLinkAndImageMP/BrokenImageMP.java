@@ -26,6 +26,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -35,7 +36,6 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.aventstack.extentreports.ExtentReports;
@@ -43,34 +43,16 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
 import dataDriven.dataDriven;
-import extentReport.BaseTest1;
+import extentReport.BaseTestMP;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-
-public class BrokenImageMP extends BaseTest1 {
+public class BrokenImageMP extends BaseTestMP {
 	public ExtentTest extentTest;
 
 	String loginPage = "https://vnshealth-crm--fullsbx.sandbox.my.site.com/member/login";
 
 	@BeforeTest
 	public void loginMember() throws IOException, InterruptedException {
-//		if (browserName.equalsIgnoreCase("chrome")) {
-//			WebDriverManager.chromedriver().setup();
-//			driver = new ChromeDriver();
-//		}
-//
-//		else if (browserName.equalsIgnoreCase("edge")) {
-//			WebDriverManager.edgedriver().setup();
-//			driver = new EdgeDriver();
-//		}
-//		Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
-//		String browserName1 = cap.getBrowserName().toLowerCase();
-//		String v = cap.getVersion().toString();
-//		log("Browser Name= " + browserName1 + ", Browser Version= " + v);
 
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
@@ -80,10 +62,9 @@ public class BrokenImageMP extends BaseTest1 {
 		driver.get(loginPage);
 
 		dataDriven d = new dataDriven();
-		// ArrayList data = d.getData("User2", "loginInfo");
+
 		ArrayList TS05 = d.getData("TS05", "TC01");
 		String username = (String) TS05.get(6);
-
 		ArrayList TS06 = d.getData("TS06", "TC01");
 		String password = (String) TS06.get(6);
 
@@ -112,47 +93,11 @@ public class BrokenImageMP extends BaseTest1 {
 		Thread.sleep(5000);
 	}
 
-	@AfterMethod
-	// (groups = "Broken Image Test")
-	public void testBrokenImages() {
-		Integer iBrokenImageCount = 0;
-
-		String status = "passed";
-		try {
-			iBrokenImageCount = 0;
-			List<WebElement> image_list = driver.findElements(By.xpath("//img"));
-
-			// System.out.println("The page under test has " + image_list.size() + "
-			// image/s");
-			log("The page under test has " + image_list.size() + " image/s");
-			for (WebElement img : image_list) {
-				if (img != null) {
-					CloseableHttpClient client = HttpClientBuilder.create().build();
-					HttpGet request = new HttpGet(img.getAttribute("src"));
-					CloseableHttpResponse response = client.execute(request);
-
-					if (response.getCode() != 200) {
-						// System.out.println(img.getAttribute("outerHTML") + " is broken.");
-						log("The broken image is :" + img.getAttribute("outerHTML"));
-						iBrokenImageCount++;
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			status = "failed";
-			// System.out.println(e.getMessage());
-		}
-		status = "passed";
-		// System.out.println("The page " + "has " + iBrokenImageCount + " broken
-		// image/s");
-		log("The page " + "has " + iBrokenImageCount + " broken image/s");
-	}
-
 	// 1. Homepage
 	@Test(groups = "Broken Image Test")
 	public void testBrokenImagesHomepage() throws InterruptedException {
 		Thread.sleep(5000);
+		testBrokenImages();
 	}
 
 	// 2. Benefits -Benefits
@@ -165,6 +110,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Benefits']"));
 		benefitsSubMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 3. Benefits -Pharmacy and Prescriptions
@@ -177,6 +123,7 @@ public class BrokenImageMP extends BaseTest1 {
 				"//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Pharmacy & Prescriptions']"));
 		pharmacyMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 4. Benefits -ID Card
@@ -189,6 +136,7 @@ public class BrokenImageMP extends BaseTest1 {
 				.findElement(By.xpath("(//a[@data-type='comm__namedPage'][normalize-space()='ID Card'])[2]"));
 		idCardMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 5. Benefits -OTC Benefits
@@ -201,6 +149,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='OTC Benefits']"));
 		otcBenefitsMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 6. Benefits -Rewards
@@ -213,6 +162,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Rewards']"));
 		rewardsMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 7. Benefits -Plan History
@@ -225,6 +175,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Plan History']"));
 		planHostoryMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 8. My Care -My PCP
@@ -237,6 +188,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='My PCP']"));
 		myPCPMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 9. My Care -My Healthplan Care Team
@@ -249,6 +201,8 @@ public class BrokenImageMP extends BaseTest1 {
 				"//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='My Health Plan Care Team']"));
 		myHealthPlanTeamMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
+
 	}
 
 	// 10. My Care -Service Authorizations
@@ -261,6 +215,7 @@ public class BrokenImageMP extends BaseTest1 {
 				"//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Service Authorizations']"));
 		serviceAuth.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 11. My Care -My Medical Supplies and Equipment
@@ -273,6 +228,7 @@ public class BrokenImageMP extends BaseTest1 {
 				"//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='My Medical Supplies and Equipment']"));
 		myMedicalSuppliesandEquipment.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 12. Claims -My Claims
@@ -285,6 +241,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='My Claims']"));
 		myClaims.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 13. Resources -My Plan Resources
@@ -297,6 +254,7 @@ public class BrokenImageMP extends BaseTest1 {
 				"//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='My Plan Resources']"));
 		myPlanResources.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 14. Resources -Benefit Partners
@@ -309,6 +267,7 @@ public class BrokenImageMP extends BaseTest1 {
 				"//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Benefit Partners']"));
 		benefitPartners.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 15. Grievances & Appeals- Grievances
@@ -322,6 +281,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Grievances']"));
 		grievances.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 16. Grievances & Appeals- Appeals
@@ -335,6 +295,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Appeals']"));
 		appeals.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 17. Communication Center
@@ -347,6 +308,7 @@ public class BrokenImageMP extends BaseTest1 {
 				"//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='Communication Center']"));
 		comCenterSubMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	// 18. My Account
@@ -359,6 +321,7 @@ public class BrokenImageMP extends BaseTest1 {
 				By.xpath("//ul[@class='submenu']//a[@data-type='comm__namedPage'][normalize-space()='My Account']"));
 		myAccountSubMenu.click();
 		Thread.sleep(10000);
+		testBrokenImages();
 	}
 
 	@AfterTest
